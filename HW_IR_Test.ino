@@ -40,7 +40,7 @@ void setup() {
   pinMode(IRBL_IR_LED_PIN, OUTPUT);
   pinMode(IRBR_IR_LED_PIN, OUTPUT);
 
-  Serial.begin(9600);      // open the serial port at 9600 bps:
+  Serial.begin(115200);      // open the serial port at 9600 bps:
 
   DEBUG_PRINT("Starting...");
 }
