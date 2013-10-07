@@ -33,6 +33,8 @@ int IRBR_SIDE_On;
 int IRBR_BACK_Diff;
 int IRBR_SIDE_Diff;
 
+int averageCount = 30;
+
 void setup() {
 	// Set IR pins as outputs
   pinMode(IRFL_IR_LED_PIN, OUTPUT);
@@ -49,37 +51,37 @@ void loop() {
 	// Read each sensor in a loop
   digitalWrite(IRFL_IR_LED_PIN, HIGH);
   delay(LED_READ_DELAY_TIME);
-  IRFL_FRONT_On = analogRead(IRFL_FRONT_PHOTOTRANSISTOR_PIN);
-  IRFL_SIDE_On = analogRead(IRFL_SIDE_PHOTOTRANSISTOR_PIN);
+  IRFL_FRONT_On = readSensor(IRFL_FRONT_PHOTOTRANSISTOR_PIN, averageCount);
+  IRFL_SIDE_On = readSensor(IRFL_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   digitalWrite(IRFL_IR_LED_PIN, LOW);
 
   digitalWrite(IRFR_IR_LED_PIN, HIGH);
   delay(LED_READ_DELAY_TIME);
-  IRFR_FRONT_On = analogRead(IRFR_FRONT_PHOTOTRANSISTOR_PIN);
-  IRFR_SIDE_On = analogRead(IRFR_SIDE_PHOTOTRANSISTOR_PIN);
+  IRFR_FRONT_On = readSensor(IRFR_FRONT_PHOTOTRANSISTOR_PIN, averageCount);
+  IRFR_SIDE_On = readSensor(IRFR_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   digitalWrite(IRFR_IR_LED_PIN, LOW);
 
   digitalWrite(IRBL_IR_LED_PIN, HIGH);
   delay(LED_READ_DELAY_TIME);
-  IRBL_BACK_On = analogRead(IRBL_BACK_PHOTOTRANSISTOR_PIN);
-  IRBL_SIDE_On = analogRead(IRBL_SIDE_PHOTOTRANSISTOR_PIN);
+  IRBL_BACK_On = readSensor(IRBL_BACK_PHOTOTRANSISTOR_PIN, averageCount);
+  IRBL_SIDE_On = readSensor(IRBL_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   digitalWrite(IRBL_IR_LED_PIN, LOW);
 
   digitalWrite(IRBR_IR_LED_PIN, HIGH);
   delay(LED_READ_DELAY_TIME);
-  IRBR_BACK_On = analogRead(IRBR_BACK_PHOTOTRANSISTOR_PIN);
-  IRBR_SIDE_On = analogRead(IRBR_SIDE_PHOTOTRANSISTOR_PIN);
+  IRBR_BACK_On = readSensor(IRBR_BACK_PHOTOTRANSISTOR_PIN, averageCount);
+  IRBR_SIDE_On = readSensor(IRBR_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   digitalWrite(IRBR_IR_LED_PIN, LOW);  
     
-  IRFL_FRONT_Off = analogRead(IRFL_FRONT_PHOTOTRANSISTOR_PIN);
-  IRFL_SIDE_Off = analogRead(IRFL_SIDE_PHOTOTRANSISTOR_PIN);
-  IRFR_FRONT_Off = analogRead(IRFR_FRONT_PHOTOTRANSISTOR_PIN);
-  IRFR_SIDE_Off = analogRead(IRFR_SIDE_PHOTOTRANSISTOR_PIN);
+  IRFL_FRONT_Off = readSensor(IRFL_FRONT_PHOTOTRANSISTOR_PIN, averageCount);
+  IRFL_SIDE_Off = readSensor(IRFL_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
+  IRFR_FRONT_Off = readSensor(IRFR_FRONT_PHOTOTRANSISTOR_PIN, averageCount);
+  IRFR_SIDE_Off = readSensor(IRFR_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   
-  IRBL_BACK_Off = analogRead(IRBL_BACK_PHOTOTRANSISTOR_PIN);
-  IRBL_SIDE_Off = analogRead(IRBL_SIDE_PHOTOTRANSISTOR_PIN);
-  IRBR_BACK_Off = analogRead(IRBR_BACK_PHOTOTRANSISTOR_PIN);
-  IRBR_SIDE_Off = analogRead(IRBR_SIDE_PHOTOTRANSISTOR_PIN);
+  IRBL_BACK_Off = readSensor(IRBL_BACK_PHOTOTRANSISTOR_PIN, averageCount);
+  IRBL_SIDE_Off = readSensor(IRBL_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
+  IRBR_BACK_Off = readSensor(IRBR_BACK_PHOTOTRANSISTOR_PIN, averageCount);
+  IRBR_SIDE_Off = readSensor(IRBR_SIDE_PHOTOTRANSISTOR_PIN, averageCount);
   
   IRFL_FRONT_Diff = IRFL_FRONT_On - IRFL_FRONT_Off;
   IRFL_SIDE_Diff = IRFL_SIDE_On - IRFL_SIDE_Off;
@@ -117,4 +119,14 @@ void loop() {
   PLOT("IRBR_SIDE_On", IRBR_SIDE_On);
   PLOT("IRBR_BACK_Diff", IRBR_BACK_Diff);
   PLOT("IRBR_SIDE_Diff", IRBR_SIDE_Diff);
+}
+
+
+int readSensor(int pin, int averageCount)
+{
+  int value = 0;
+  int i = 0;
+  for(i = 0; i < averageCount; i++)
+      value += analogRead(pin);
+  return value/averageCount;
 }
