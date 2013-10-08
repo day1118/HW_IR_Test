@@ -33,7 +33,7 @@ int IRBR_SIDE_On;
 int IRBR_BACK_Diff;
 int IRBR_SIDE_Diff;
 
-int averageCount = 30;
+int averageCount = 1;
 
 void setup() {
 	// Set IR pins as outputs
@@ -41,6 +41,22 @@ void setup() {
   pinMode(IRFR_IR_LED_PIN, OUTPUT);
   pinMode(IRBL_IR_LED_PIN, OUTPUT);
   pinMode(IRBR_IR_LED_PIN, OUTPUT);
+
+  pinMode(MOTOR_L_A_PIN, OUTPUT);
+  pinMode(MOTOR_L_B_PIN, OUTPUT);
+  pinMode(MOTOR_L_ENABLE_PIN, OUTPUT);
+
+  pinMode(MOTOR_R_A_PIN, OUTPUT);
+  pinMode(MOTOR_R_B_PIN, OUTPUT);
+  pinMode(MOTOR_R_ENABLE_PIN, OUTPUT);
+
+  digitalWrite(MOTOR_L_A_PIN, HIGH);
+  digitalWrite(MOTOR_L_B_PIN, LOW);
+  digitalWrite(MOTOR_R_A_PIN, HIGH);
+  digitalWrite(MOTOR_R_B_PIN, LOW);
+
+  //analogWrite(MOTOR_L_ENABLE_PIN, 220);
+  //analogWrite(MOTOR_R_ENABLE_PIN, 220);
 
   Serial.begin(115200);      // open the serial port at 9600 bps:
 
